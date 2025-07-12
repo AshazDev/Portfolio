@@ -12,13 +12,7 @@ import {
 } from '@/components/ui/morphing-dialog'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
-import {
-  PROJECTS,
-  WORK_EXPERIENCE,
-  BLOG_POSTS,
-  EMAIL,
-  SOCIAL_LINKS,
-} from './data'
+import { PROJECTS, WORK_EXPERIENCE, EMAIL, SOCIAL_LINKS } from './data'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -43,7 +37,15 @@ type ProjectVideoProps = {
   src: string
 }
 
-function ProjectVideo({ src }: ProjectVideoProps) {
+function ProjectVideo({
+  src,
+  description,
+  technologies,
+}: {
+  src: string
+  description: string
+  technologies?: string[]
+}) {
   return (
     <MorphingDialog
       transition={{
@@ -62,14 +64,31 @@ function ProjectVideo({ src }: ProjectVideoProps) {
         />
       </MorphingDialogTrigger>
       <MorphingDialogContainer>
-        <MorphingDialogContent className="relative aspect-video rounded-2xl bg-zinc-50 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950 dark:ring-zinc-800/50">
+        <MorphingDialogContent className="relative flex aspect-video flex-col items-center justify-center rounded-2xl bg-zinc-50 p-1 ring-1 ring-zinc-200/50 ring-inset md:flex-row dark:bg-zinc-950 dark:ring-zinc-800/50">
           <video
             src={src}
             autoPlay
             loop
             muted
-            className="aspect-video h-[50vh] w-full rounded-xl md:h-[70vh]"
+            className="aspect-video h-[40vh] w-full rounded-xl md:h-[60vh] md:w-[60%]"
           />
+          <div className="mt-6 flex w-full flex-col items-start md:mt-0 md:ml-8 md:w-1/3">
+            <p className="mb-4 text-base text-zinc-600 dark:text-zinc-300">
+              {description}
+            </p>
+            {technologies && technologies.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded bg-zinc-200 px-2 py-1 text-xs font-medium text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </MorphingDialogContent>
         <MorphingDialogClose
           className="fixed top-6 right-6 h-fit w-fit rounded-full bg-white p-1"
@@ -135,11 +154,44 @@ export default function Personal() {
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
-        <div className="flex-1">
-          <p className="text-zinc-600 dark:text-zinc-400">
-            Clean, responsive and intuitive designs.
-          </p>
+        <div className="mt-24 flex flex-col-reverse items-center justify-between gap-8 md:flex-row md:items-start md:gap-16">
+          <div className="flex-1 text-left">
+            <h1 className="mb-4 text-3xl font-bold">Mohammed Ashaz Shams</h1>
+            <h2 className="mb-6 text-xl font-semibold">
+              Web Developer & Designer
+            </h2>
+            <p className="mb-4 text-zinc-600 dark:text-zinc-400">
+              Hi! I'm Ashaz, a web developer and designer focused on building
+              clean, fast, and intuitive digital experiences. I love working
+              with modern web technologies to create beautiful and performant
+              products.
+            </p>
+            <p className="mb-4 text-zinc-600 dark:text-zinc-400">
+              I enjoy solving problems, learning new things, and collaborating
+              with others to bring ideas to life.
+            </p>
+          </div>
+          <div className="flex flex-shrink-0 flex-col items-center justify-center">
+            <img
+              src="/profile.png"
+              alt="Profile picture"
+              className="mb-8 h-40 w-40 rounded-full border border-zinc-200 object-cover dark:border-zinc-800"
+            />
+            <Link
+              href="/blog"
+              className="w-full max-w-xs rounded-md bg-zinc-900 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-700 sm:w-auto dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+            >
+              Blog
+            </Link>
+          </div>
         </div>
+      </motion.section>
+
+      <motion.section
+        variants={VARIANTS_SECTION}
+        transition={TRANSITION_SECTION}
+      >
+        <div className="flex-1"></div>
       </motion.section>
 
       <motion.section
@@ -154,7 +206,11 @@ export default function Personal() {
               className="w-full flex-none snap-center space-y-2 sm:w-1/2"
             >
               <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                <ProjectVideo src={project.video} />
+                <ProjectVideo
+                  src={project.video}
+                  description={project.description}
+                  technologies={project.technologies}
+                />
               </div>
               <div className="px-1">
                 <a
@@ -209,42 +265,6 @@ export default function Personal() {
               </div>
             </a>
           ))}
-        </div>
-      </motion.section>
-
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
-        <h3 className="mb-3 text-lg font-medium">Blog</h3>
-        <div className="flex flex-col space-y-0">
-          <AnimatedBackground
-            enableHover
-            className="h-full w-full rounded-lg bg-zinc-100 dark:bg-zinc-900/80"
-            transition={{
-              type: 'spring',
-              bounce: 0,
-              duration: 0.2,
-            }}
-          >
-            {BLOG_POSTS.map((post) => (
-              <Link
-                key={post.uid}
-                className="-mx-3 rounded-xl px-3 py-3"
-                href={post.link}
-                data-id={post.uid}
-              >
-                <div className="flex flex-col space-y-1">
-                  <h4 className="font-normal dark:text-zinc-100">
-                    {post.title}
-                  </h4>
-                  <p className="text-zinc-500 dark:text-zinc-400">
-                    {post.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </AnimatedBackground>
         </div>
       </motion.section>
 

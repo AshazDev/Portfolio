@@ -4,6 +4,7 @@ type Project = {
   link: string
   video: string
   id: string
+  technologies?: string[]
 }
 
 type WorkExperience = {
@@ -36,6 +37,7 @@ export const PROJECTS: Project[] = [
     video:
       'https://video.gumlet.io/67d7b5a4cbc68914a351038b/67d7b5c8cbc68914a351044a/download.mp4',
     id: 'ashtalk',
+    technologies: ['React', 'WebRTC', 'Socket.io', 'Node.js'],
   },
   {
     name: 'Crazy Candy',
@@ -45,6 +47,7 @@ export const PROJECTS: Project[] = [
     video:
       'https://video.gumlet.io/67d7b5a4cbc68914a351038b/67d7bc4e45ef0663b062f796/download.mp4',
     id: 'crazycandy',
+    technologies: ['Next.js', 'Tailwind CSS', 'Sanity CMS', 'Firebase'],
   },
 ]
 
@@ -60,7 +63,12 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
-
+  {
+    title: 'How I Set Up My Home Server',
+    description: 'A guide to building and configuring a home server for self-hosting and learning.',
+    link: '/blog/how-i-set-up-my-home-server',
+    uid: 'how-i-set-up-my-home-server',
+  },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
